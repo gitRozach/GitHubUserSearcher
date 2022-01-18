@@ -21,11 +21,14 @@ const StyledUserItem = styled.div`
 
     .user-info-box {
         display: flex;
+		justify-content: flex-start;
+		align-items: center;
         flex-direction: row;
         padding: 0;
         margin: 0;
 
         .user-info {
+			font-size: 20px;
             padding: 0rem 1rem 0rem 0rem;
             opacity: 0;
             animation: user-info-animation 1s ease forwards;
@@ -44,7 +47,7 @@ const StyledUserItem = styled.div`
     .username-label {
         text-decoration: none;
         font-size: 20px;
-        font-weight: 500;
+        font-weight: 700;
         color: black;
     }
     
@@ -69,16 +72,14 @@ const StyledUserItem = styled.div`
             height: 70px;
             margin: .7rem;
             border-radius: 50%;
-        }
-    
-        .username-label {
-            position: static;
+			filter: drop-shadow(0px 0px 5px rgba(63, 63, 63, 0.5));
         }
         
         Button {
             position: static;
             max-width: 95%;
             height: 35px;
+			filter: drop-shadow(0px 0px 5px rgba(63, 63, 63, 0.5));
         }
     }
 
@@ -96,11 +97,12 @@ const StyledUserItem = styled.div`
         .avatar-img {
             width: 60px;
             height: 60px;
-            margin: .5rem;
+            margin: .5rem 1rem;
             border-radius: 50%;
         }
     
         .username-label {
+			text-align: center;
             padding: 0rem 1rem 0rem 1rem;
         }
         
@@ -110,14 +112,6 @@ const StyledUserItem = styled.div`
             max-width: 20%;
             height: 35px;
         }
-    }
-
-    .add-button {
-
-    }
-
-    .remove-button {
-        opacity: 0;
     }
 
     .username-label {

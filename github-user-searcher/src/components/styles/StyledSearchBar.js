@@ -31,14 +31,22 @@ const StyledSearchBar = styled.div`
         background-image: url('data:image/svg+xml;base64, ${backgroundMobileBase64}');
         background-position: right;
         background-size: 200%;
-        padding: 1rem 3rem;
+        padding: 1rem 4rem;
+		
+		.input-field {
+            font-size: 20px;
+        }
     }
 
     @media screen and (min-width: 1440px) {
         flex-direction: row;
         background-image: url('data:image/svg+xml;base64, ${backgroundDesktopBase64}');
         background-size: 300%;
-        padding: 3rem;
+        padding: 4rem;
+		
+		.input-field {
+            font-size: 3rem;
+        }
     }
 
     .input-field {
@@ -51,7 +59,6 @@ const StyledSearchBar = styled.div`
         width: 100%;
         spellcheck: false;
     
-        font-size: 3rem;
         font-family: 'Poppins', sans-serif;
         color: rgb(63, 63, 63);
         text-align: center;
