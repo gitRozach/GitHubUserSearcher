@@ -43,43 +43,40 @@ const GitHubUserSearcher = () => {
         setFavoriteUserItems(newFavoriteUserItems);
     }
 
-    const onInputChanged = (newInput) => {
-        if (newInput.length < 3) {
+    const searchForUser = (username) => {
+        if(searchValue.length < 3) {
+            setErrorValue(null);
+            resetUserItems();
             return;
         }
-        setErrorValue(null);
-        /*fetch('https://api.github.com/search/users\?q\=user:' + newInput)
+        if(userItems[searchValue]) /*Avoids spamming with the same requests*/{
+            return;
+        }
+
+        fetch('https://api.github.com/search/users\?q\=user:' + searchValue)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            if (data.items){
+                const newUserItems = {};
+                
+                data.items.map(user => {
+                    newUserItems[user.login] = { avatarUrl: user.avatar_url, githubUrl: user.html_url, reposUrl: user.repos_url, followersUrl: user.followers_url };
+                });
+                setUserItems(newUserItems);
+            } else {
+                setErrorValue(`'${searchValue}' Does Not Exist.`);
+            }
         })
-        .catch(error => console.error(error))*/
+        .catch(error => console.error(error));
+    }
+
+    const onInputChanged = (newInput) => {
+        /*TODO: searchForUser(newInput); => Asynchron*/
     }
 
     const onKeyPressed = ({ keyCode }) => {
         if (keyCode === 13) /*Enter*/ {
-            
-            if(searchValue.length < 3) {
-                setErrorValue(null);
-                resetUserItems();
-                return;
-            }
-
-            fetch('https://api.github.com/search/users\?q\=user:' + searchValue)
-            .then(response => response.json())
-            .then(data => {
-                if (data.items){
-                    const newUserItems = {};
-                    
-                    data.items.map(user => {
-                        newUserItems[user.login] = { avatarUrl: user.avatar_url, githubUrl: user.html_url, reposUrl: user.repos_url, followersUrl: user.followers_url };
-                    });
-                    setUserItems(newUserItems);
-                } else {
-                    setErrorValue(`'${searchValue}' Does Not Exist.`);
-                }
-            })
-            .catch(error => console.error(error))
+            searchForUser(searchValue);
         }
     }
 
