@@ -18,10 +18,9 @@ const UserItem = ({
     const [followersCount, setFollowersCount] = useState(null);
     
     useEffect(() => {
-        console.log(reposUrl);
         fetch(reposUrl, {method: 'GET',}).then(data => data.json()).then(d => setReposCount(d.length));
         fetch(followersUrl, {method: 'GET',}).then(data => data.json()).then(d => setFollowersCount(d.length));
-    }, []);
+    }, [followersUrl, reposUrl]);
 
     return (<StyledUserItem onClick={() => setInfoExpanded(prev => !prev)} color={color} background={background} >
         <div className="user-item-header">

@@ -14,6 +14,9 @@ const GitHubUserSearcher = () => {
     
     const resetUserItems = () => setUserItems(new Map());
     const resetFavoriteUserItems = () => setFavoriteUserItems(new Map());
+    
+    const fetchAbortController = new AbortController();
+    const fetchSignal = fetchAbortController.signal;
 
     useEffect(() => {
         if (localStorage.getItem('favorite-users')) {
@@ -28,6 +31,15 @@ const GitHubUserSearcher = () => {
     useEffect(() => {
         localStorage.setItem('favorite-users', JSON.stringify(favoriteUserItems));
     }, [favoriteUserItems]);
+
+    useEffect(() => {
+        async function fetchUser() {
+            searchForUser(searchValue);
+        }
+
+        fetchUser();
+        return () => fetchAbortController.abort();
+    }, [searchValue]);
 
     const addFavoriteUser = (user) => {
         if (!user) return;
@@ -44,7 +56,7 @@ const GitHubUserSearcher = () => {
     }
 
     const searchForUser = (username) => {
-        if(searchValue.length < 3) {
+        if(!searchValue || searchValue.length < 3) {
             setErrorValue(null);
             resetUserItems();
             return;
@@ -53,7 +65,9 @@ const GitHubUserSearcher = () => {
             return;
         }
 
-        fetch('https://api.github.com/search/users\?q\=user:' + searchValue)
+
+
+        fetch('https://api.github.com/search/users\?q\=user:' + searchValue, {signal: fetchSignal})
         .then(response => response.json())
         .then(data => {
             if (data.items){

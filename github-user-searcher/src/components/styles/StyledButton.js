@@ -31,7 +31,6 @@ const StyledButton = styled.button`
 
     :active {
         font-size: calc(${props => props.fontSize ? props.fontSize : '20px'} + 6px);
-        value: "hallo";
         ::after {
             width: 0rem;
             left: 0;
@@ -48,7 +47,7 @@ const StyledButton = styled.button`
     }
 
     ::before {
-        content: ${props => props.clickedText ?? "jajaj"};
+        content: ${props => props.clickedText ?? ''};
         color: ${props => props.color || 'yellow'};
         width: ${props => props.width ? props.width : '40vw' };
         height: ${props => props.height ?? '3.9rem'};
