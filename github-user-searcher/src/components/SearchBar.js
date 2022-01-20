@@ -9,7 +9,7 @@ const SearchBar = ({ searchText='Search for GitHub User Profiles', searchChanged
             (<StyledSearchBar>
                 <input type="text" spellCheck="false" placeholder={searchText} className="input-field" onChange={e => {
                     setInputValue(e.target.value);
-                    searchChangedCallback(e.target.value);
+                    if(searchChangedCallback) searchChangedCallback(e.target.value);
                 }} />
                 {errorValue && <p className="input-error-label">{errorValue}</p>}
             </StyledSearchBar>)

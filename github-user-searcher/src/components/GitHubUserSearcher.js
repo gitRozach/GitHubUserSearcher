@@ -7,16 +7,15 @@ import UsersBar from './UsersBar';
 import UserItem from './UserItem';
 
 const GitHubUserSearcher = () => {
+    const fetchAbortController = new AbortController();
+    const fetchSignal = fetchAbortController.signal;
 
-    const [searchValue, errorValue, setErrorValue, searchBar] = SearchBar({searchChangedCallback: (newSearch) => onInputChanged(newSearch)});
+    const [searchValue, errorValue, setErrorValue, searchBar] = SearchBar({});
     const [userItems, setUserItems] = useState(new Map());
     const [favoriteUserItems, setFavoriteUserItems] = useState(new Map());
     
     const resetUserItems = () => setUserItems(new Map());
     const resetFavoriteUserItems = () => setFavoriteUserItems(new Map());
-    
-    const fetchAbortController = new AbortController();
-    const fetchSignal = fetchAbortController.signal;
 
     useEffect(() => {
         if (localStorage.getItem('favorite-users')) {
@@ -65,27 +64,19 @@ const GitHubUserSearcher = () => {
             return;
         }
 
-
-
         fetch('https://api.github.com/search/users\?q\=user:' + searchValue, {signal: fetchSignal})
         .then(response => response.json())
         .then(data => {
             if (data.items){
                 const newUserItems = {};
                 
-                data.items.map(user => {
-                    newUserItems[user.login] = { avatarUrl: user.avatar_url, githubUrl: user.html_url, reposUrl: user.repos_url, followersUrl: user.followers_url };
-                });
+                data.items.map(user => newUserItems[user.login] = { avatarUrl: user.avatar_url, githubUrl: user.html_url, reposUrl: user.repos_url, followersUrl: user.followers_url });
                 setUserItems(newUserItems);
             } else {
                 setErrorValue(`'${searchValue}' Does Not Exist.`);
             }
         })
-        .catch(error => console.error(error));
-    }
-
-    const onInputChanged = (newInput) => {
-        /*TODO: searchForUser(newInput); => Asynchron*/
+        .catch(error => console.error('Could not fetch user data: ' + error));
     }
 
     const onKeyPressed = ({ keyCode }) => {

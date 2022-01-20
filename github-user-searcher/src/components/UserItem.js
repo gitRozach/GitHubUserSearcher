@@ -13,20 +13,24 @@ const UserItem = ({
         addToFavoritesCallback, 
         removeFromFavoritesCallback
 }) => {
+    const fetchAbortController = new AbortController();
+    const fetchSignal = fetchAbortController.signal;
+
     const [infoExpanded, setInfoExpanded] = useState(false);
     const [reposCount, setReposCount] = useState(null);
     const [followersCount, setFollowersCount] = useState(null);
     
     useEffect(() => {
-        fetch(reposUrl, {method: 'GET',}).then(data => data.json()).then(d => setReposCount(d.length));
-        fetch(followersUrl, {method: 'GET',}).then(data => data.json()).then(d => setFollowersCount(d.length));
-    }, [followersUrl, reposUrl]);
+        fetch(reposUrl, {method: 'GET', signal: fetchSignal}).then(data => data.json()).then(d => setReposCount(d.length)).catch(e => {});
+        fetch(followersUrl, {method: 'GET', signal: fetchSignal}).then(data => data.json()).then(d => setFollowersCount(d.length)).catch(e => {});
+        return () => fetchAbortController.abort();
+    }, [reposUrl, followersUrl]);
 
     return (<StyledUserItem onClick={() => setInfoExpanded(prev => !prev)} color={color} background={background} >
         <div className="user-item-header">
-            <img src={avatarUrl} alt="avatar-image" className="avatar-img" />
+            <img src={avatarUrl} alt="avatar-img" className="avatar-img" />
             
-            <a className="username-label" href={githubUrl} target="_blank">{username}</a>
+            <a className="username-label" href={githubUrl} target="_blank" rel="noreferrer">{username}</a>
             
             {infoExpanded && <div className="user-info-box">
                 {reposCount !== null ? <p className="user-info">{`${reposCount} Repositories`}</p> : null}
