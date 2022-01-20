@@ -22,8 +22,8 @@ const UserItem = ({
     
     useEffect(() => {
         if(!infoExpanded) return;
-        if (!reposCount) fetch(reposUrl, {method: 'GET', signal: fetchSignal}).then(data => data.json()).then(d => setReposCount(d.length)).catch(e => {});
-        if (!followersCount) fetch(followersUrl, {method: 'GET', signal: fetchSignal}).then(data => data.json()).then(d => setFollowersCount(d.length)).catch(e => {});
+        if (reposCount === null) fetch(reposUrl, {method: 'GET', signal: fetchSignal}).then(data => data.json()).then(d => setReposCount(d.length)).catch(e => {});
+        if (followersCount === null) fetch(followersUrl, {method: 'GET', signal: fetchSignal}).then(data => data.json()).then(d => setFollowersCount(d.length)).catch(e => {});
         return () => fetchAbortController.abort();
     }, [infoExpanded]);
 
