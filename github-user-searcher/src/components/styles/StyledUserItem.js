@@ -19,11 +19,16 @@ const StyledUserItem = styled.div`
     background: ${props => props.background ? props.background : 'white'};
     animation: slide-in-animation 1s ease forwards; 
 
+    .user-item-loader {
+        
+    }
+
     .user-info-box {
         display: flex;
-		justify-content: flex-start;
-		align-items: center;
         flex-direction: row;
+        align-items: center;
+		justify-content: flex-start;
+		
         padding: 0;
         margin: 0;
 
