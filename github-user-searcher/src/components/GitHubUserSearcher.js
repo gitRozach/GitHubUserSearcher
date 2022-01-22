@@ -101,14 +101,17 @@ const GitHubUserSearcher = () => {
                     reposUrl={userItems[key].reposUrl}
                     followersUrl={userItems[key].followersUrl} 
                     key={'user-' + key} 
-                    addToFavoritesCallback={favoriteUserItems[key] ? null : () => addFavoriteUser({
-                        username: key,
-                        avatarUrl: userItems[key].avatarUrl, 
-                        githubUrl: userItems[key].githubUrl,
-                        reposUrl: userItems[key].reposUrl,
-                        followersUrl: userItems[key].followersUrl,
-                    })}
-                    removeFromFavoritesCallback={favoriteUserItems[key] ? () => removeFavoriteUser(key) : null}/> 
+                    addToFavoritesCallback={favoriteUserItems[key] ? null : e => {
+                        addFavoriteUser({
+                            username: key,
+                            avatarUrl: userItems[key].avatarUrl, 
+                            githubUrl: userItems[key].githubUrl,
+                            reposUrl: userItems[key].reposUrl,
+                            followersUrl: userItems[key].followersUrl,
+                        });
+                        e.stopPropagation();
+                    }}
+                    removeFromFavoritesCallback={favoriteUserItems[key] ? e => { removeFavoriteUser(key); e.stopPropagation(); } : null}/> 
             ))]}/>}
             {favoriteUserItems && (<UsersBar background='rgb(63, 63, 63)' color='white' description={Object.keys(favoriteUserItems).length > 0 ? 'Your Favorite GitHub Users' : null} userItems={[Object.keys(favoriteUserItems).map(key => (
                 <UserItem 
@@ -118,7 +121,7 @@ const GitHubUserSearcher = () => {
                     reposUrl={favoriteUserItems[key].reposUrl}
                     followersUrl={favoriteUserItems[key].followersUrl}  
                     key={'favorite-user-' + key} 
-                    removeFromFavoritesCallback={favoriteUserItems[key] ? () => removeFavoriteUser(key) : null}
+                    removeFromFavoritesCallback={favoriteUserItems[key] ? e => { removeFavoriteUser(key); e.stopPropagation(); } : null}
                 />))]}/>)}
             <FooterBar />
         </StyledGitHubUserSearcher>
