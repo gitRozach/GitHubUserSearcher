@@ -3,7 +3,14 @@ import styled from 'styled-components';
 const StyledLoadingSpinner = styled.div`
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    
+    @media screen and (min-width: 375px) {
+        justify-content: center;
+    }
+
+    @media screen and (min-width: 1440px) {
+        justify-content: flex-start;
+    }
 
     width: 100%;
     height: 100%;
